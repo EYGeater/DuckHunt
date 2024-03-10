@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
     IEnumerator CreateDucks(int _count)
     {
         yield return new WaitForSeconds(1);
-        int spwnPts = spawnPoints.Length; // cache reference to spawnPoints.length to avoid function call
+        int spwnPts = spawnPoints.Length; // cache reference to spawnPoints.length to avoid function calls
         for (int i = 0; i < _count; i++)
         {
             // get references to instantiated ducks here, to avoid having to find them later
@@ -77,7 +77,8 @@ public class GameManager : MonoBehaviour
     IEnumerator Timeup()
     {
         yield return new WaitForSeconds(10f);
-        for (int i = 0; i < ducksToSpawn; i++)
+        int ducksLength = ducks.Length; // cache reference to ducks.Length to avoid function calls
+        for (int i = 0; i < ducksLength; i++)
         {
             ducks[i].TimeUp();
         }
@@ -105,13 +106,10 @@ public class GameManager : MonoBehaviour
         bg.color = blueColor;
         ducksCreated--;
 
-        if (ducksCreated <= 0)
+        if (ducksCreated <= 0 && !isRoundOver) // short circuit evaluation
         {
-            if (!isRoundOver)
-            {
-                StopCoroutine(Timeup());
-                StartCoroutine(RoundOver());
-            }
+            StopCoroutine(Timeup());
+            StartCoroutine(RoundOver());
         }
     }
 

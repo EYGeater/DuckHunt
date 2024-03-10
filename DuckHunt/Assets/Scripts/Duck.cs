@@ -19,12 +19,14 @@ public class Duck : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        StartCoroutine(Fly());
     }
 
-    // Update is called once per frame
-    void Update()
+    // Converted code previously in update to a coroutine
+    private IEnumerator Fly()
     {
-        if (!isDead)
+        // regular AI behavior only continues until duck is "dead"
+        while (!isDead)
         {
             if (Vector3.Distance(transform.position, target) > speed)
             {
@@ -45,23 +47,25 @@ public class Duck : MonoBehaviour
                 activeTime -= Time.deltaTime;
 
             }
-
             UpdateSprite();
+            yield return null;
         }
-        else
+        // once duck is dead wait for slight delay in Dead() coroutine to activate isStartFalling
+        yield return new WaitUntil(() => isStartFalling == true);
+
+        // While this gameObject is still active in the scene, fall
+        while(gameObject.activeInHierarchy == true)
         {
-            if(isStartFalling)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, transform.position - transform.up, 10*Time.deltaTime);
-            }
+            transform.position = Vector3.MoveTowards(transform.position, transform.position - transform.up, 10 * Time.deltaTime);
+            yield return null;
         }
+        
     }
 
     public void TimeUp()
     {
         speed *= 2;
-        if(target != null)
-            target = transform.position + new Vector3(0, 20, 0);
+        target = transform.position + new Vector3(0, 20, 0);
     }
 
     private void OnMouseDown()
