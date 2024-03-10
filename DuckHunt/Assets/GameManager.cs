@@ -27,14 +27,13 @@ public class GameManager : MonoBehaviour
     bool isRoundOver;
 
     public TextMeshProUGUI scoreText, hitsText;
-    string scoreTxt, hitsTxt; // caching references to TMP_Text of the above UI to avoid get() set() function calls
     int score, hits, totalClicks;
 
     // Using Awake() instead of Start() so other classes can call GameManager on Start() or Enable() - Amon
     private void Awake()
     {
         // Checking to see if there's already an instance of GameManager, and destroying this instance if there is
-        // *Not really needed here because there's no persistance between scenes
+        // *Not really needed here because there's no persistence between scenes
         if (Instance != null)
             Destroy(this);
         else
@@ -43,9 +42,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        scoreTxt = scoreText.text;
-        hitsTxt = hitsText.text;
-
         ducks = new Duck[ducksToSpawn]; // setup array of ducks ahead of time, so we can reference the current ducks easily
     }
 
@@ -55,8 +51,8 @@ public class GameManager : MonoBehaviour
         {
             totalClicks++;
 
-            scoreTxt = score.ToString("000");
-            hitsTxt = $"{hits} / {totalClicks}"; // string interpolation over string concatenation
+            scoreText.text = score.ToString("000");
+            hitsText.text = $"{hits} / {totalClicks}"; // string interpolation over string concatenation
         }
     }
 
@@ -81,8 +77,7 @@ public class GameManager : MonoBehaviour
     IEnumerator Timeup()
     {
         yield return new WaitForSeconds(10f);
-        Duck[] ducks = FindObjectsOfType<Duck>();
-        for (int i = 0; i < ducks.Length; i++)
+        for (int i = 0; i < ducksToSpawn; i++)
         {
             ducks[i].TimeUp();
         }

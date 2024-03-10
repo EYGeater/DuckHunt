@@ -60,7 +60,8 @@ public class Duck : MonoBehaviour
     public void TimeUp()
     {
         speed *= 2;
-        target = transform.position + new Vector3(0, 20, 0);
+        if(target != null)
+            target = transform.position + new Vector3(0, 20, 0);
     }
 
     private void OnMouseDown()
