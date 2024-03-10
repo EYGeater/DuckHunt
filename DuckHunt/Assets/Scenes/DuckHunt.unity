@@ -1101,6 +1101,7 @@ MonoBehaviour:
   - {fileID: 2094486956}
   - {fileID: 2010157888}
   duckPrefab: {fileID: 1769356552738442288, guid: ee1a635d7fbc4cb4cb089caf1a6b9433, type: 3}
+  ducksToSpawn: 0
   bg: {fileID: 701577876}
   blueColor: {r: 0.3019608, g: 0.8431373, b: 0.9803922, a: 0}
   dogMiss: {fileID: 1798995865}
